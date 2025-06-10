@@ -1,8 +1,4 @@
-type SearchResponse = {
-  success: boolean;
-  message?: string;
-  pokemon?: any; 
-}
+import { SearchResponse } from "@/types/type";
 
 export async function searchAction(_prevState: SearchResponse | null, formData: FormData): Promise<SearchResponse> {
   try {

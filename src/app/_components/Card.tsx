@@ -1,25 +1,5 @@
-type PokemonType = {
-  id: number;
-  sprites: {
-    front_default: string;
-  };
-  species: {
-    name: string;
-  }
-  types: {
-    type: {
-      name: string;
-    };
-  }[];
-  height: number;
-  weight: number;
-  stats: {
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }[];
-};
+import Image from "next/image";
+import { PokemonType } from "@/types/type";
 
 interface Props {
   pokemon: PokemonType;
@@ -29,7 +9,7 @@ export function PokemonCard({ pokemon }: Props) {
   return (
     <div className="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-lg p-6 space-y-4 text-black">
       <div className="flex flex-col items-center text-center">
-        <img
+        <Image
           src={pokemon.sprites.front_default}
           alt={pokemon.species.name}
           className="w-32 h-32"
