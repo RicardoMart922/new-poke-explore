@@ -12,7 +12,10 @@ export function PokemonCard({ pokemon }: Props) {
         <Image
           src={pokemon.sprites.front_default}
           alt={pokemon.species.name}
-          className="w-32 h-32"
+          width={100}
+          height={100}
+          priority
+          className="h-32 w-32"
         />
         <h2 className="text-2xl font-bold capitalize">{pokemon.species.name}</h2>
         <span className="text-sm text-gray-500">ID #{pokemon.id}</span>
