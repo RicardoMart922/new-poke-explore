@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 import { IconButton } from "./IconButton";
 
@@ -29,24 +29,24 @@ export function PokemonSpriteCarousel({
   const next = () => setCurrent((prev) => (prev + 1) % sprites.length);
   const prev = () => setCurrent((prev) => (prev - 1 + sprites.length) % sprites.length);
 
-  const resetInterval = () => {
+  const resetInterval = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (autoAdvance) {
       intervalRef.current = setInterval(() => {
         setCurrent((prev) => (prev + 1) % sprites.length);
       }, interval);
     }
-  };
+  }, [autoAdvance, interval, sprites.length]);
 
   useEffect(() => {
     resetInterval();
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [sprites.length, autoAdvance, interval]);
+  }, [resetInterval]);
 
   const handleManualNavigation = (direction: "prev" | "next") => {
-    direction === "prev" ? prev() : next();
+    (direction === "prev" ? prev : next)();
     resetInterval();
   };
 
@@ -70,10 +70,10 @@ export function PokemonSpriteCarousel({
         </IconButton>
 
         <span className="text-sm text-gray-600">{sprites[current].label}</span>
-        
+
         <IconButton
           onClick={() => handleManualNavigation("next")}
-          ariaLabel="Sprite proximo"
+          ariaLabel="Sprite próximo"
         >
           <ArrowBigRightDash className="text-indigo-500" />
         </IconButton>
