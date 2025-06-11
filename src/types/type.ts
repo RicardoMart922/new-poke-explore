@@ -2,6 +2,9 @@ export type PokemonType = {
   id: number;
   sprites: {
     front_default: string;
+    back_default: string;
+    back_shiny: string;
+    front_shiny: string;
   };
   species: {
     name: string;
