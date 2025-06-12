@@ -8,7 +8,12 @@ export type PokemonType = {
   };
   species: {
     name: string;
-  }
+  };
+  abilities: {
+    ability: {
+      name: string;
+    }
+  }[];
   types: {
     type: {
       name: string;
