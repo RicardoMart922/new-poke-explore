@@ -11,10 +11,10 @@ interface Props {
 
 export function PokemonCard({ pokemon }: Props) {
   const spriteList = [
-    { label: "Frontal", src: pokemon.sprites.front_default },
-    { label: "Costas", src: pokemon.sprites.back_default },
-    { label: "Frontal Shiny", src: pokemon.sprites.front_shiny },
-    { label: "Costas Shiny", src: pokemon.sprites.back_shiny },
+    { label: "Front", src: pokemon.sprites.front_default },
+    { label: "Back", src: pokemon.sprites.back_default },
+    { label: "Front Shiny", src: pokemon.sprites.front_shiny },
+    { label: "Back Shiny", src: pokemon.sprites.back_shiny },
   ].filter(sprite => sprite.src);
 
   return (
@@ -31,13 +31,45 @@ export function PokemonCard({ pokemon }: Props) {
         <h3 className="font-semibold text-gray-800 text-sm">Stats Base:</h3>
         <ul className="space-y-1 text-sm">
           {pokemon.stats.map((pokemonStats, index) => (
-            <li key={index} className="flex justify-between">
-              <span className="capitalize">{pokemonStats.stat.name}</span>
-              <span className="font-semibold">{pokemonStats.base_stat}</span>
+            <li key={index} className="flex items-center gap-2">
+              <span className="w-[120px] capitalize">{pokemonStats.stat.name}</span>
+              <div className="flex-1 bg-gray-200 rounded h-3 overflow-hidden">
+                <div
+                  className="bg-indigo-500 h-full"
+                  style={{ width: `${Math.min(pokemonStats.base_stat, 100)}%` }}
+                />
+              </div>
+              <span className="w-8 text-right font-semibold">{pokemonStats.base_stat}</span>
             </li>
           ))}
         </ul>
       </div>
+
+      <div className="space-y-1 text-sm">
+        <h3 className="font-semibold text-gray-800 text-sm">Abilities:</h3>
+        <ul className="flex gap-2 flex-wrap">
+          {pokemon.abilities.map((ability, index) => (
+            <li
+              key={index}
+              className="px-2 py-1 bg-gray-100 rounded-full text-xs capitalize text-gray-700"
+            >
+              {ability.ability.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="flex w-full justify-end">
+        <a
+          href={`https://www.pokemon.com/br/pokedex/${pokemon.species.name}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-indigo-600 hover:underline"
+        >
+          View in official Pokédex
+        </a>
+      </div>
+
     </div>
   );
 }
