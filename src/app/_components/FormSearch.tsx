@@ -8,17 +8,17 @@ export function FormSearchComponent() {
   const [state, stateFormAction, isPending] = useActionState(searchAction, null);
 
   return (
-    <div>
+    <>
       <form
         action={stateFormAction}
-        className="w-full max-w-md mx-auto p-6 bg-white rounded-2xl shadow-xl space-y-5 border border-gray-200"
+        className="w-96 mx-auto p-6 bg-white rounded-2xl shadow-xl space-y-5 border border-gray-200"
       >
         <div className="space-y-2">
           <label
             htmlFor="pokemon"
             className="block text-sm font-semibold text-gray-700"
           >
-            Número ou nome do Pokémon
+            Number or name of Pokemon
           </label>
           <input
             type="text"
@@ -36,7 +36,7 @@ export function FormSearchComponent() {
           className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-md transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
           disabled={isPending}
         >
-          {isPending ? "Buscando..." : "Buscar"}
+          {isPending ? "Searching..." : "Search"}
         </button>
 
         {state?.message && (
@@ -57,6 +57,6 @@ export function FormSearchComponent() {
           <PokemonCard pokemon={state.pokemon} />
         </div>
       )}
-    </div>
+    </>
   );
 }
