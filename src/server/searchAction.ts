@@ -1,3 +1,5 @@
+"use server";
+
 import { SearchResponse } from "@/types/type";
 
 export async function searchAction(_prevState: SearchResponse | null, formData: FormData): Promise<SearchResponse> {
