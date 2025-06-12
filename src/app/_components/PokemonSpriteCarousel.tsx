@@ -64,7 +64,7 @@ export function PokemonSpriteCarousel({
       <div className="flex gap-2 mb-2 min-w-[200px] justify-between items-center">
         <IconButton
           onClick={() => handleManualNavigation("prev")}
-          ariaLabel="Sprite anterior"
+          ariaLabel="Sprite previous"
         >
           <ArrowBigLeftDash className="text-indigo-500" />
         </IconButton>
@@ -73,7 +73,7 @@ export function PokemonSpriteCarousel({
 
         <IconButton
           onClick={() => handleManualNavigation("next")}
-          ariaLabel="Sprite próximo"
+          ariaLabel="Sprite next"
         >
           <ArrowBigRightDash className="text-indigo-500" />
         </IconButton>
