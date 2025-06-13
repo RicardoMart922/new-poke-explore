@@ -22,6 +22,7 @@ export async function randomPokemonAction(): Promise<SearchResponse> {
       pokemon,
     };
   } catch (error) {
+    console.error(error);
     return {
       success: false,
       message: 'Erro ao buscar Pokémon aleatório. Tente novamente.',
