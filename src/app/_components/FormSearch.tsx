@@ -1,13 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useActionState } from "react";
 import { searchAction } from "@/server/searchAction";
 import { randomPokemonAction } from "@/server/randomPokemonAction";
 import { PokemonCard } from "./Card";
+import { PokemonType } from "@/types/type";
 
 export function FormSearchComponent() {
   const [searchState, handleSearch, isSearching] = useActionState(searchAction, null);
   const [randomState, handleRandom, isRandoming] = useActionState(randomPokemonAction, null);
+  const [history, setHistory] = useState<PokemonType[]>([]);
 
   const isPending = isSearching || isRandoming;
   const pokemon = searchState?.success
@@ -16,6 +19,15 @@ export function FormSearchComponent() {
     ? randomState.pokemon
     : null;
 
+
+  useEffect(() => {
+    if (pokemon) {
+      setHistory((prev) =>
+        [pokemon, ...prev.filter((p) => p.id !== pokemon.id)].slice(0, 5)
+      );
+    }
+  }, [pokemon]);
+  
   return (
     <div className="w-96 mx-auto space-y-6">
       <form
@@ -63,6 +75,23 @@ export function FormSearchComponent() {
       </form>
 
       {pokemon && <PokemonCard pokemon={pokemon} />}
+
+      {history.length > 1 && (
+        <div className="mt-6 space-y-2">
+          <p className="text-sm font-medium text-gray-600">Recent Pokémon:</p>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {history.slice(1).map((p) => (
+              <img
+                key={p.id}
+                src={p.sprites.front_default}
+                alt={p.species.name}
+                title={p.species.name}
+                className="w-14 h-14 object-contain border rounded-xl p-1 bg-white shadow"
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
