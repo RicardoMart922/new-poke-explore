@@ -54,8 +54,8 @@ export function PokemonSpriteCarousel({
     <div className="flex flex-col items-center">
       <div className="relative w-32 h-32 mb-4">
         <Image
-          src={sprites[current].src}
-          alt={`${name} ${sprites[current].label}`}
+          src={sprites[current]?.src}
+          alt={`${name} ${sprites[current]?.label}`}
           fill
           className="object-contain"
           sizes="128px"
@@ -69,7 +69,7 @@ export function PokemonSpriteCarousel({
           <ArrowBigLeftDash className="text-indigo-500" />
         </IconButton>
 
-        <span className="text-sm text-gray-600">{sprites[current].label}</span>
+        <span className="text-sm text-gray-600">{sprites[current]?.label}</span>
 
         <IconButton
           onClick={() => handleManualNavigation("next")}
