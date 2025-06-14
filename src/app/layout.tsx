@@ -13,8 +13,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex justify-center items-center w-screen h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white">
-        <div className="flex justify-center items-center min-h-screen">
+      <body className="flex justify-center items-center w-screen h-max bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white overflow-x-hidden">
+        <div className="flex justify-center items-center min-h-screen py-4">
           {children}
         </div>
       </body>
