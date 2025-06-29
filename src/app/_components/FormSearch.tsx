@@ -6,6 +6,7 @@ import { searchAction } from "@/server/searchAction";
 import { randomPokemonAction } from "@/server/randomPokemonAction";
 import { PokemonCard } from "./Card";
 import { PokemonType } from "@/types/type";
+import Image from "next/image";
 
 export function FormSearchComponent() {
   const [searchState, handleSearch, isSearching] = useActionState(searchAction, null);
@@ -14,19 +15,19 @@ export function FormSearchComponent() {
 
   const isPending = isSearching || isRandoming;
   const pokemon = searchState?.success
-    ? searchState.pokemon
+    ? { data: searchState.pokemon, evolutionLine: searchState.evolutions }
     : randomState?.success
-    ? randomState.pokemon
+    ? { data: randomState.pokemon, evolutionLine: randomState.evolutions }
     : null;
 
-
   useEffect(() => {
-    if (pokemon) {
-      setHistory((prev) =>
-        [pokemon, ...prev.filter((p) => p.id !== pokemon.id)].slice(0, 5)
-      );
+    if (pokemon?.data) {
+      setHistory((prev) => {
+        const filtered = prev.filter((p) => p.id !== pokemon.data!.id);
+        return [pokemon.data!, ...filtered].slice(0, 5);
+      });
     }
-  }, [pokemon]);
+  }, []);
   
   return (
     <div className="w-96 mx-auto space-y-6">
@@ -74,14 +75,16 @@ export function FormSearchComponent() {
         </button>
       </form>
 
-      {pokemon && <PokemonCard pokemon={pokemon} />}
+      {pokemon && (
+        <PokemonCard pokemon={pokemon.data as PokemonType} evolutions={pokemon.evolutionLine as PokemonType[]} />
+      )}
 
       {history.length > 1 && (
         <div className="mt-6 space-y-2">
           <p className="text-sm font-medium text-gray-600">Recent Pokémon:</p>
           <div className="flex gap-3 overflow-x-auto pb-2">
             {history.slice(1).map((p) => (
-              <img
+              <Image
                 key={p.id}
                 src={p.sprites.front_default}
                 alt={p.species.name}
