@@ -1,3 +1,5 @@
+import { EvolutionNode, PokemonType } from "@/types/type";
+
 export function getTypeColor(type: string): string {
   const colors: Record<string, string> = {
     normal: "bg-gray-300 text-gray-900",
@@ -21,4 +23,45 @@ export function getTypeColor(type: string): string {
   };
 
   return colors[type] || "bg-gray-200 text-black";
+}
+
+export async function getPokemonEvolutionsFromSpeciesUrl(
+  speciesUrl: string
+): Promise<PokemonType[]> {
+  try {
+    const speciesResponse = await fetch(speciesUrl);
+    if (!speciesResponse.ok) throw new Error("Erro ao buscar species");
+    const speciesData = await speciesResponse.json();
+
+    const evolutionChainUrl = speciesData.evolution_chain.url;
+    const evolutionRes = await fetch(evolutionChainUrl);
+    if (!evolutionRes.ok) throw new Error("Erro ao buscar cadeia de evolução");
+    const evolutionData = await evolutionRes.json();
+
+    const evolutionNames: string[] = [];
+
+    const traverse = (node: EvolutionNode) => {
+      evolutionNames.push(node.species.name);
+      if (node.evolves_to.length > 0) {
+        traverse(node.evolves_to[0]);
+      }
+    };
+
+    traverse(evolutionData.chain);
+
+    const getPokemonFull = async (name: string): Promise<PokemonType | null> => {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+      if (!res.ok) return null;
+      return await res.json();
+    };
+
+    const evolutionsRaw = await Promise.all(
+      evolutionNames.map((name) => getPokemonFull(name))
+    );
+
+    return evolutionsRaw.filter(Boolean) as PokemonType[];
+  } catch (error) {
+    console.error("Erro ao buscar evoluções:", error);
+    return [];
+  }
 }
