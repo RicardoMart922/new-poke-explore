@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { PokemonType } from "@/types/type";
 import { PokemonBasicInfo } from "./PokemonBasicInfo";
 import { PokemonSpriteCarousel } from "./PokemonSpriteCarousel";
@@ -7,9 +8,10 @@ import { PokemonHeaderInfo } from "./PokemonHeaderInfo";
 
 interface Props {
   pokemon: PokemonType;
+  evolutions: PokemonType[];
 }
 
-export function PokemonCard({ pokemon }: Props) {
+export function PokemonCard({ pokemon, evolutions }: Props) {
   const spriteList = [
     { label: "Front", src: pokemon.sprites.front_default },
     { label: "Back", src: pokemon.sprites.back_default },
@@ -44,6 +46,29 @@ export function PokemonCard({ pokemon }: Props) {
           ))}
         </ul>
       </div>
+
+      {evolutions && evolutions.length > 1 && (
+        <div className="space-y-2">
+          <h3 className="font-semibold text-gray-800 text-sm">Linha Evolutiva:</h3>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {evolutions.map((evo) => (
+              <div
+                key={evo.id}
+                className={`flex flex-col items-center text-center p-2 rounded-xl border bg-gray-50 shadow-sm min-w-[100px] ${
+                  evo.id === pokemon.id ? "ring-2 ring-indigo-500" : ""
+                }`}
+              >
+                <Image
+                  src={evo.sprites.front_default}
+                  alt={evo.species.name}
+                  className="w-16 h-16 object-contain"
+                />
+                <span className="capitalize text-xs mt-1 text-gray-700">{evo.species.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="space-y-1 text-sm">
         <h3 className="font-semibold text-gray-800 text-sm">Abilities:</h3>
