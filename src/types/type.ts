@@ -32,5 +32,14 @@ export type PokemonType = {
 export type SearchResponse = {
   success: boolean;
   message?: string;
-  pokemon?: PokemonType; 
+  pokemon?: PokemonType;
+  evolutions?: PokemonType[];
+}
+
+export type EvolutionNode = {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: EvolutionNode[];
 }
